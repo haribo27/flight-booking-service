@@ -5,11 +5,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Value
+@Data
 public class BookingRequestDTO {
 
     @NotBlank(message = "Поле Имя не может быть пустым")
@@ -41,4 +41,5 @@ public class BookingRequestDTO {
     @Pattern(regexp = "^[1-9]([0-9])?[A-Fa-f]$",
             message = "Формат ввода номера места должен быть (1-99) Номер места, (A-F), номер ряда. 25B")
     String seatNumber;
+    Long userId;
 }
