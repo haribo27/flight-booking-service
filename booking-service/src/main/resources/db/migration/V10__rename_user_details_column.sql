@@ -1,0 +1,1 @@
+ALTER TABLE bookings RENAME COLUMN user_details TO user_details_id;

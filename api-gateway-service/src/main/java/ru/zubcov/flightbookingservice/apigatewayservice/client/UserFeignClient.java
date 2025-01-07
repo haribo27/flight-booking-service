@@ -9,16 +9,16 @@ import ru.zubcov.flightbookingservice.commondto.UserRequestDTO;
 import ru.zubcov.flightbookingservice.commondto.UserResponseDTO;
 import ru.zubcov.flightbookingservice.commondto.UserUpdateRequestDTO;
 
-@FeignClient(name = "userClient", url = "${user-url}", configuration = FeignConfiguration.class)
-public interface UserClient {
+@FeignClient(name = "userClient", url = "${user-service-url}", configuration = FeignConfiguration.class)
+public interface UserFeignClient {
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserResponseDTO> saveUser(@RequestBody UserRequestDTO request);
 
-    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserResponseDTO> findUserById(@PathVariable long userId);
 
-    @PatchMapping(value = "/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/users/{userId}", consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<UserResponseDTO> updateUser(@RequestBody UserUpdateRequestDTO request,
                                                @PathVariable long userId);
 }

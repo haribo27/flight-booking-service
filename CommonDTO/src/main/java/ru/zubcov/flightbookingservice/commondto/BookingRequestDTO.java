@@ -5,11 +5,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookingRequestDTO {
 
     @NotBlank(message = "Поле Имя не может быть пустым")
@@ -30,11 +34,11 @@ public class BookingRequestDTO {
     @NotBlank(message = "Город вылета не может быть пустым")
     @Size(min = 1, max = 50,
             message = "Длина поля города вылета должно быть в пределах от 1 до 50 символов")
-    String departmentCity;
+    String departmentAirport;
     @NotBlank(message = "Город прибытия не может быть пустым")
     @Size(min = 1, max = 50,
             message = "Длина поля города прибытия должно быть в пределах от 1 до 50 символов")
-    String arrivalCity;
+    String arrivalAirport;
     @NotNull(message = "Время вылета не может быть пустым")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime flightDateTime;
