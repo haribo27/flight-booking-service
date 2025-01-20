@@ -23,6 +23,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.projectlombok:lombok")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
+    implementation("org.springdoc:springdoc-openapi-ui:1.8.0")
     annotationProcessor("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.4.1")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
