@@ -1,0 +1,2 @@
+ALTER TABLE bookings
+    ALTER COLUMN flight_id DROP NOT NULL;
