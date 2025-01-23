@@ -1,4 +1,4 @@
-package ru.zubcov.flightbookingservice.commondto;
+package ru.zubcov.flightbookingservice.bookingservice.exception;
 
 public class EntityNotFound extends RuntimeException {
     public EntityNotFound(String message) {

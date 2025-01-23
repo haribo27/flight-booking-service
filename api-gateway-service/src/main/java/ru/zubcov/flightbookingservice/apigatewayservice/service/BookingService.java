@@ -3,18 +3,28 @@ package ru.zubcov.flightbookingservice.apigatewayservice.service;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openapitools.model.BookingDTO;
+import org.openapitools.model.BookingRequestDTO;
+import org.openapitools.model.BookingResponseDTO;
+import org.openapitools.model.BookingStatusUpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.zubcov.flightbookingservice.apigatewayservice.client.BookingFeignClient;
 import ru.zubcov.flightbookingservice.apigatewayservice.client.UserFeignClient;
+import ru.zubcov.flightbookingservice.apigatewayservice.exception.BookingStatusException;
+import ru.zubcov.flightbookingservice.apigatewayservice.exception.EntityNotFound;
+import ru.zubcov.flightbookingservice.apigatewayservice.exception.UnauthorizedExceptionDTO;
+import ru.zubcov.flightbookingservice.apigatewayservice.exception.UnexpectedServiceException;
 import ru.zubcov.flightbookingservice.apigatewayservice.mapper.BookingMapper;
 import ru.zubcov.flightbookingservice.apigatewayservice.messaging.GatewayKafkaProducer;
-import ru.zubcov.flightbookingservice.commondto.*;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
+
+import static org.openapitools.model.BookingDTO.BookingStatusEnum.AWAITING_CONFIRMATION;
+import static org.openapitools.model.BookingDTO.BookingStatusEnum.AWAITING_PAYMENT;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +45,7 @@ public class BookingService {
         return bookingMapper.mapToBookingResponseDTO(request);
     }
 
-    public ResponseEntity<Set<BookingDTO>> getBookingInfo(long userId) {
+    public ResponseEntity<List<BookingDTO>> getBookingInfo(long userId) {
         log.info("Getting info about user's id: {} bookings", userId);
         isUserExists(userId);
         return bookingFeignClient.getBookingInfo(userId);
@@ -53,14 +63,14 @@ public class BookingService {
 
     private void isBookingAlreadyUpdatedStatus(long userId, long bookingId) {
         log.info("Check that booking has correct status to change it {}", bookingId);
-        ResponseEntity<Set<BookingDTO>> userBookingsResponse = bookingFeignClient.getBookingInfo(userId);
+        ResponseEntity<List<BookingDTO>> userBookingsResponse = bookingFeignClient.getBookingInfo(userId);
         if (userBookingsResponse.getStatusCode() == HttpStatus.OK && !Objects.requireNonNull(userBookingsResponse.getBody()).isEmpty()) {
             Optional<BookingDTO> maybeBooking = userBookingsResponse.getBody()
                     .stream()
                     .filter(bookingDTO -> bookingDTO.getId() == bookingId).findAny();
             maybeBooking.filter(b ->
-                            "AWAITING_CONFIRMATION".equals(b.getBookingStatus()) ||
-                                    "AWAITING_PAYMENT".equals(b.getBookingStatus()))
+                            AWAITING_CONFIRMATION.equals(b.getBookingStatus()) ||
+                                    AWAITING_PAYMENT.equals(b.getBookingStatus()))
                     .orElseThrow(() -> new BookingStatusException("You can CONFIRM or CANCEL only bookings with status: AWAITING_CONFIRMATION or AWAITING_PAYMENT"));
         } else {
             log.warn("Response from booking-service status: {}", userBookingsResponse.getStatusCode());
@@ -70,7 +80,7 @@ public class BookingService {
 
     private void isUserBookingExists(long userId, long bookingId) {
         log.info("Check that users {} has booking {}", userId, bookingId);
-        ResponseEntity<Set<BookingDTO>> userBookingsResponse = bookingFeignClient.getBookingInfo(userId);
+        ResponseEntity<List<BookingDTO>> userBookingsResponse = bookingFeignClient.getBookingInfo(userId);
         if (userBookingsResponse.getStatusCode() == HttpStatus.OK && !Objects.requireNonNull(userBookingsResponse.getBody()).isEmpty()) {
             Optional<BookingDTO> maybeBooking = userBookingsResponse.getBody()
                     .stream()

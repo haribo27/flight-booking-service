@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Value;
 
 @Value
-public class UserRequestDTO {
+public class  UserRequestDTO {
 
     @NotBlank(message = "Поле логин не может быть пустым")
     @Size(min = 6, max = 255, message = "Длина логина должна быть от 6 до 255 символов")

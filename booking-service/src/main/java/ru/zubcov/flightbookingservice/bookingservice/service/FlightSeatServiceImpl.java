@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.zubcov.flightbookingservice.bookingservice.exception.EntityNotFound;
 import ru.zubcov.flightbookingservice.bookingservice.model.FlightSeat;
 import ru.zubcov.flightbookingservice.bookingservice.repository.FlightSeatRepository;
-import ru.zubcov.flightbookingservice.commondto.EntityNotFound;
 
 import java.util.List;
 import java.util.Map;

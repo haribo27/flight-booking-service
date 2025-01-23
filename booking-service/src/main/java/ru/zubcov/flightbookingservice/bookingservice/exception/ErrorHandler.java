@@ -1,10 +1,10 @@
 package ru.zubcov.flightbookingservice.bookingservice.exception;
 
+import org.openapitools.model.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.zubcov.flightbookingservice.commondto.ErrorDTO;
 import ru.zubcov.flightbookingservice.userservice.exception.EntityNotFound;
 
 @ControllerAdvice
