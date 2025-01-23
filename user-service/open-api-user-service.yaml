@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: Сервис пользователей OpenAPI спецификация
+  version: 0.0.1
+servers:
+  - url: http://localhost:7070/
+    description: User server
+paths:
+  /users:
+    post:
+      summary: Метод для создания пользователя
+      tags:
+        - Users
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequestDTO"
+      responses:
+        '200':
+          description: Успешный ответ на создание пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        'default':
+          description: Все остальные ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+  /users/{user_id}:
+    get:
+      summary: Метод для получения пользователя по ID
+      tags:
+        - Users
+      operationId: findUserById
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешный ответ на найденного пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+        'default':
+          description: Все остальные ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+    patch:
+      summary: Метод для обновления информации о пользователе
+      tags:
+        - Users
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequestDTO"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Успешный ответ на обновление пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+        'default':
+          description: Все остальные ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+
+
+components:
+  schemas:
+    UserResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 15
+        email:
+          type: string
+          example: word@mail.ru
+    UserRequestDTO:
+      type: object
+      required:
+        - login
+        - email
+        - password
+      properties:
+        login:
+          type: string
+          example: snake123
+        email:
+          type: string
+          example: word@mail.ru
+        password:
+          type: string
+          example: qwerty11234
+    UserUpdateRequestDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          example: snake123
+        email:
+          type: string
+          example: word@mail.ru
+        password:
+          type: string
+          example: qwerty11234
+    ErrorDTO:
+      type: object
+      required:
+        - message
+        - httpcode
+        - timestamp
+      properties:
+        message:
+          type: string
+          example: Entity not found
+        httpCode:
+          type: string
+          example: 404
+        timestamp:
+          type: object
+          example: 2024-12-24

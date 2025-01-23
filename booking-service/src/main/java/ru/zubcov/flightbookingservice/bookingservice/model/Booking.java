@@ -3,6 +3,7 @@ package ru.zubcov.flightbookingservice.bookingservice.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.openapitools.model.BookingDTO;
 
 @NamedEntityGraph(
         name = "Booking.withAllObjects",
@@ -33,5 +34,5 @@ public class Booking {
     @Column(nullable = false)
     private String seat;
     @Enumerated(EnumType.STRING)
-    private BookingStatus status;
+    private BookingDTO.BookingStatusEnum status;
 }

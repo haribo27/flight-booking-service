@@ -1,12 +1,12 @@
 package ru.zubcov.flightbookingservice.userservice.mapper;
 
 import org.mapstruct.*;
-import ru.zubcov.flightbookingservice.commondto.UserRequestDTO;
-import ru.zubcov.flightbookingservice.commondto.UserResponseDTO;
-import ru.zubcov.flightbookingservice.commondto.UserUpdateRequestDTO;
+import org.openapitools.model.UserRequestDTO;
+import org.openapitools.model.UserResponseDTO;
+import org.openapitools.model.UserUpdateRequestDTO;
 import ru.zubcov.flightbookingservice.userservice.model.User;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     User mapToUser(UserRequestDTO requestDTO);

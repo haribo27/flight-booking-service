@@ -2,11 +2,11 @@ package ru.zubcov.flightbookingservice.userservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openapitools.model.UserRequestDTO;
+import org.openapitools.model.UserResponseDTO;
+import org.openapitools.model.UserUpdateRequestDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.zubcov.flightbookingservice.commondto.UserRequestDTO;
-import ru.zubcov.flightbookingservice.commondto.UserResponseDTO;
-import ru.zubcov.flightbookingservice.commondto.UserUpdateRequestDTO;
 import ru.zubcov.flightbookingservice.userservice.exception.EntityNotFound;
 import ru.zubcov.flightbookingservice.userservice.mapper.UserMapper;
 import ru.zubcov.flightbookingservice.userservice.model.User;

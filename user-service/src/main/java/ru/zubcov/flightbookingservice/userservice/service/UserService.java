@@ -1,8 +1,9 @@
 package ru.zubcov.flightbookingservice.userservice.service;
 
-import ru.zubcov.flightbookingservice.commondto.UserRequestDTO;
-import ru.zubcov.flightbookingservice.commondto.UserResponseDTO;
-import ru.zubcov.flightbookingservice.commondto.UserUpdateRequestDTO;
+
+import org.openapitools.model.UserRequestDTO;
+import org.openapitools.model.UserResponseDTO;
+import org.openapitools.model.UserUpdateRequestDTO;
 
 public interface UserService {
     UserResponseDTO saveUser(UserRequestDTO request);
