@@ -29,6 +29,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.cloud:spring-cloud-starter-gateway:4.2.0")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("io.github.openfeign:feign-okhttp:13.5")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0")

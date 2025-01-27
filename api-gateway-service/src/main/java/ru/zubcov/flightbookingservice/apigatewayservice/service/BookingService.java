@@ -45,11 +45,11 @@ public class BookingService {
         return bookingMapper.mapToBookingResponseDTO(request);
     }
 
-    public ResponseEntity<List<BookingDTO>> getBookingInfo(long userId) {
+/*    public ResponseEntity<List<BookingDTO>> getBookingInfo(long userId) {
         log.info("Getting info about user's id: {} bookings", userId);
         isUserExists(userId);
         return bookingFeignClient.getBookingInfo(userId);
-    }
+    }*/
 
     public BookingStatusUpdateDTO updateBookingStatus(long userId, long bookingId, Boolean isConfirmed) {
         isUserExists(userId);
