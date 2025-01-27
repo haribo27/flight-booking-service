@@ -1,0 +1,153 @@
+openapi: 3.0.0
+info:
+  title: Сервис бронирования OpenAPI спецификация
+  version: 0.0.1
+servers:
+  - url: http://localhost:5050/
+    description: Booking server
+paths:
+
+  /bookings/users/{user_id}:
+    get:
+      summary: Метод для получения всех бронирований пользователя
+      tags:
+        - Bookings
+      operationId: getUsersBookings
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ на получение бронирований пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookingDTOs"
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+
+
+
+components:
+  schemas:
+    ErrorDTO:
+      type: object
+      required:
+        - message
+        - httpcode
+        - timestamp
+      properties:
+        message:
+          type: string
+          example: Entity not found
+        httpCode:
+          type: string
+          example: 404
+        timestamp:
+          type: object
+          example: 2024-12-24
+    BookingDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 15
+        userEmail:
+          type: string
+          example: vanya637@gmail.com
+        departmentAirport:
+          type: string
+          example: KUF
+        arrivalAirport:
+          type: string
+          example: VKO
+        departureTime:
+          type: string
+          example: 2024-04-14
+        arrivalTime:
+          type: string
+          example: 2024-04-14
+        seatNumber:
+          type: string
+          example: 26C
+        bookingStatus:
+          type: string
+          enum:
+            - AWAITING_CONFIRMATION
+            - AWAITING_PAYMENT
+            - CONFIRMED
+            - CANCELLED
+            - REJECTED_FLIGHT_NOT_FOUND
+            - REJECTED_NO_MORE_SEATS_ON_FLIGHT
+    BookingDTOs:
+      type: array
+      items:
+        $ref: "#/components/schemas/BookingDTO"
+    BookingRequestDTO:
+      type: object
+      required:
+        - name
+        - surname
+        - documentNumber
+        - departmentAirport
+        - arrivalAirport
+        - flightDateTime
+        - userId
+      properties:
+        name:
+          type: string
+          example: Ivan
+        surname:
+          type: string
+          example: Ivanov
+        patronymic:
+          type: string
+          example: Ivanovich
+        documentNumber:
+          type: string
+          example: 3281294719
+        departmentAirport:
+          type: string
+          example: KUF
+        arrivalAirport:
+          type: string
+          example: VKO
+        flightDateTime:
+          type: string
+          example: 2024-04-14
+        seatNumber:
+          type: string
+          example: 26C
+        userId:
+          type: number
+          example: 20
+    BookingStatusUpdateDTO:
+      type: object
+      required:
+        - userId
+        - bookingId
+        - isConfirmed
+      properties:
+        userid:
+          type: number
+          example: 25
+        bookingId:
+          type: number
+          example: 40
+        isConfirmed:
+          type: boolean
+          example: false
+
+
+
+
+
+

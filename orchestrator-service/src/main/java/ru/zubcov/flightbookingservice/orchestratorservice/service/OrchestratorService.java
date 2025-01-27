@@ -2,12 +2,11 @@ package ru.zubcov.flightbookingservice.orchestratorservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openapitools.model.BookingRequestDTO;
+import org.openapitools.model.BookingStatusUpdateDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
-import ru.zubcov.flightbookingservice.commondto.BookingRequestDTO;
-import ru.zubcov.flightbookingservice.commondto.BookingStatusUpdateDTO;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -19,7 +18,7 @@ public class OrchestratorService {
     @Value("${booking-process-status-topic}")
     private String bookingStatusUpdateTopic;
 
-    public void bookingProcess(BookingRequestDTO booking) {
+    public void sendBookingRequestToBookingService(BookingRequestDTO booking) {
         log.info("Send new booking request to booking-service {}", booking);
         kafkaTemplate.send(bookingProcessTopic, booking);
     }

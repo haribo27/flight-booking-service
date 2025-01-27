@@ -2,11 +2,11 @@ package ru.zubcov.flightbookingservice.bookingservice.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.openapitools.model.BookingRequestDTO;
 import org.springframework.stereotype.Service;
 import ru.zubcov.flightbookingservice.bookingservice.model.User;
 import ru.zubcov.flightbookingservice.bookingservice.model.UserDetails;
 import ru.zubcov.flightbookingservice.bookingservice.repository.UserDetailsRepository;
-import ru.zubcov.flightbookingservice.commondto.BookingRequestDTO;
 
 @Service
 @RequiredArgsConstructor

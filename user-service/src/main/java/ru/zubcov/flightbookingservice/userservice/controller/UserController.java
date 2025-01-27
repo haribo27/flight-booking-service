@@ -1,19 +1,20 @@
 package ru.zubcov.flightbookingservice.userservice.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.openapitools.api.UsersApi;
+import org.openapitools.model.UserRequestDTO;
+import org.openapitools.model.UserResponseDTO;
+import org.openapitools.model.UserUpdateRequestDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ru.zubcov.flightbookingservice.commondto.UserRequestDTO;
-import ru.zubcov.flightbookingservice.commondto.UserResponseDTO;
-import ru.zubcov.flightbookingservice.commondto.UserUpdateRequestDTO;
 import ru.zubcov.flightbookingservice.userservice.service.UserService;
 
 @Controller
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UsersApi {
 
     private final UserService userService;
 

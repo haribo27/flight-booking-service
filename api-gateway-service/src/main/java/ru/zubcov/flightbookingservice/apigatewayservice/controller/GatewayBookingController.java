@@ -2,42 +2,40 @@ package ru.zubcov.flightbookingservice.apigatewayservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.openapitools.api.BookingsApi;
+import org.openapitools.model.BookingRequestDTO;
+import org.openapitools.model.BookingResponseDTO;
+import org.openapitools.model.BookingStatusUpdateDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.zubcov.flightbookingservice.apigatewayservice.service.BookingService;
-import ru.zubcov.flightbookingservice.commondto.BookingDTO;
-import ru.zubcov.flightbookingservice.commondto.BookingRequestDTO;
-import ru.zubcov.flightbookingservice.commondto.BookingResponseDTO;
-import ru.zubcov.flightbookingservice.commondto.BookingStatusUpdateDTO;
 
-import java.util.Set;
 
 @Controller
 @Validated
 @RequiredArgsConstructor
-public class GatewayBookingController {
+public class GatewayBookingController implements BookingsApi {
 
-    private final BookingService bookingClient;
+    private final BookingService bookingService;
 
-    @PostMapping("/users/{userId}/bookings")
-    public ResponseEntity<BookingResponseDTO> createBookingRequest(@RequestBody @Valid BookingRequestDTO request,
-                                                                   @PathVariable long userId) {
-        return new ResponseEntity<>(bookingClient.handleAndSendBookingRequest(request, userId),
+    @PostMapping("/bookings/{userId}")
+    public ResponseEntity<BookingResponseDTO> createBooking(@PathVariable Long userId,
+                                                            @RequestBody @Valid BookingRequestDTO request) {
+        return new ResponseEntity<>(bookingService.handleAndSendBookingRequest(request, userId),
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/{userId}/bookings")
-    public ResponseEntity<Set<BookingDTO>> getBookingsInfo(@PathVariable long userId) {
-        return bookingClient.getBookingInfo(userId);
+    @PostMapping("/bookings/{bookingId}/users/{userId}/confirm")
+    public ResponseEntity<BookingStatusUpdateDTO> updateBookingStatus(@PathVariable Long userId,
+                                                                      @PathVariable Long bookingId,
+                                                                      @RequestParam(defaultValue = "false") Boolean isConfirmed) {
+        return new ResponseEntity<>(bookingService.updateBookingStatus(userId, bookingId, isConfirmed), HttpStatus.ACCEPTED);
     }
 
-    @PostMapping("/users/{userId}/bookings/{bookingId}/confirm")
-    public ResponseEntity<BookingStatusUpdateDTO> updateBookingStatus(@RequestParam(defaultValue = "false") Boolean isConfirmed,
-                                                                      @PathVariable long userId,
-                                                                      @PathVariable long bookingId) {
-        return new ResponseEntity<>(bookingClient.updateBookingStatus(userId, bookingId, isConfirmed), HttpStatus.ACCEPTED);
-    }
 }

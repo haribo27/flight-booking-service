@@ -21,13 +21,17 @@ configurations {
 
 repositories {
 	mavenCentral()
+	flatDir {
+		dirs("libs")
+	}
 }
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.flywaydb:flyway-core:11.1.0")
-	implementation(project(":CommonDTO"))
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
+	implementation(files("libs/openapi-users-0.0.1.jar"))
 	implementation("org.mapstruct:mapstruct:1.6.3")
 	compileOnly("org.projectlombok:lombok")
 	runtimeOnly("org.postgresql:postgresql")

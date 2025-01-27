@@ -21,17 +21,22 @@ configurations {
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs("libs")
+    }
 }
+
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.cloud:spring-cloud-starter-gateway:4.2.0")
     implementation("org.springframework.kafka:spring-kafka")
     implementation("io.github.openfeign:feign-okhttp:13.5")
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0")
-    implementation("org.springframework.boot:spring-boot-starter-validation:3.4.1")
     implementation("org.mapstruct:mapstruct:1.6.3")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
+    implementation(files("libs/openapi-gateway-0.0.1.jar"))
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
-    implementation(project(":CommonDTO"))
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -42,3 +47,4 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+

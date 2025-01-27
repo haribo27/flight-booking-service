@@ -1,13 +1,13 @@
 package ru.zubcov.flightbookingservice.userservice.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.openapitools.model.ErrorDTO;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.zubcov.flightbookingservice.commondto.ErrorDTO;
 
 @ControllerAdvice
 @Slf4j

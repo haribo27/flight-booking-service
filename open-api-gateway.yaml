@@ -1,0 +1,374 @@
+openapi: 3.0.0
+info:
+  title: Сервис маршрутизации запросов OpenAPI спецификация
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/
+    description: Api gateway server
+paths:
+  /users:
+    post:
+      summary: Метод для создания пользователя
+      tags:
+        - Users
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequestDTO"
+      responses:
+        '200':
+          description: Успешный ответ на создание пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        'default':
+          description: Все остальные ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+  /users/{user_id}:
+    get:
+      summary: Метод для получения пользователя по ID
+      tags:
+        - Users
+      operationId: findUserById
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ на найденного пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+        'default':
+          description: Все остальные ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+    patch:
+      summary: Метод для обновления информации о пользователе
+      tags:
+        - Users
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateRequestDTO"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ на обновление пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTO"
+        '404':
+          description: Пользователь не найден
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+        'default':
+          description: Все остальные ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+  /bookings/{user_id}:
+    post:
+      summary: Метод для создания нового бронирования
+      tags:
+        - Bookings
+      operationId: createBooking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookingRequestDTO"
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ на создание бронирования
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+    get:
+      summary: Метод для получения всех бронирований пользователя
+      tags:
+        - Bookings
+      operationId: getUsersBookings
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ на получение бронирований пользователя
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookingDTOs"
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+  /bookings/{booking_id}/users/{user_id}/confirm:
+    post:
+      summary: Метод для подтверждения или отклонения бронирования
+      tags:
+        - Bookings
+      operationId: updateBookingStatus
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: Идентификатор пользователя
+          schema:
+            type: string
+        - name: booking_id
+          in: path
+          required: true
+          description: Идентификатор бронирования
+          schema:
+            type: string
+        - name: isConfirmed
+          in: query
+          required: false
+          description: Подтверждение или отклонение заявки на бронирование
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Успешный ответ на обновления статуса бронирования
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookingStatusUpdateDTO"
+        '404':
+          description: Entity not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorDTO"
+
+
+
+
+
+components:
+  schemas:
+    UserResponseDTO:
+      type: object
+      properties:
+        user_id:
+          type: number
+          example: 15
+        email:
+          type: string
+          example: word@mail.ru
+    UserRequestDTO:
+      type: object
+      required:
+        - login
+        - email
+        - password
+      properties:
+        login:
+          type: string
+          example: snake123
+        email:
+          type: string
+          example: word@mail.ru
+        password:
+          type: string
+          example: qwerty11234
+    UserUpdateRequestDTO:
+      type: object
+      properties:
+        login:
+          type: string
+          example: snake123
+        email:
+          type: string
+          example: word@mail.ru
+        password:
+          type: string
+          example: qwerty11234
+    ErrorDTO:
+      type: object
+      required:
+        - message
+        - httpcode
+        - timestamp
+      properties:
+        message:
+          type: string
+          example: Entity not found
+        httpCode:
+          type: string
+          example: 404
+        timestamp:
+          type: object
+          example: 2024-12-24
+    BookingRequestDTO:
+      type: object
+      required:
+        - name
+        - surname
+        - documentNumber
+        - departmentAirport
+        - arrivalAirport
+        - flightDateTime
+        - userId
+      properties:
+        name:
+          type: string
+          example: Ivan
+        surname:
+          type: string
+          example: Ivanov
+        patronymic:
+          type: string
+          example: Ivanovich
+        documentNumber:
+          type: string
+          example: 3281294719
+        departmentAirport:
+          type: string
+          example: KUF
+        arrivalAirport:
+          type: string
+          example: VKO
+        flightDateTime:
+          type: string
+          example: 2024-04-14
+        seatNumber:
+          type: string
+          example: 26C
+        userId:
+          type: number
+          example: 20
+    BookingResponseDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Ivan
+        surname:
+          type: string
+          example: Ivanov
+        patronymic:
+          type: string
+          example: Ivanovich
+        departmentAirport:
+          type: string
+          example: KUF
+        arrivalAirport:
+          type: string
+          example: VKO
+        flightDateTime:
+          type: string
+          example: 2024-04-14
+        seatNumber:
+          type: string
+          example: 26C
+    BookingDTO:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 15
+        userEmail:
+          type: string
+          example: vanya637@gmail.com
+        departmentAirport:
+          type: string
+          example: KUF
+        arrivalAirport:
+          type: string
+          example: VKO
+        departureTime:
+          type: string
+          example: 2024-04-14
+        arrivalTime:
+          type: string
+          example: 2024-04-14
+        seatNumber:
+          type: string
+          example: 26C
+        bookingStatus:
+          type: string
+          enum:
+            - AWAITING_CONFIRMATION
+            - AWAITING_PAYMENT
+            - CONFIRMED
+            - CANCELLED
+            - REJECTED_FLIGHT_NOT_FOUND
+            - REJECTED_NO_MORE_SEATS_ON_FLIGHT
+    BookingDTOs:
+      type: array
+      items:
+        $ref: "#/components/schemas/BookingDTO"
+    BookingStatusUpdateDTO:
+      type: object
+      required:
+        - userId
+        - bookingId
+        - isConfirmed
+      properties:
+        userid:
+          type: number
+          example: 25
+        bookingId:
+          type: number
+          example: 40
+        isConfirmed:
+          type: boolean
+          example: false
+
+

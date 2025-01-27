@@ -21,6 +21,9 @@ configurations {
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs("libs")
+    }
 }
 
 dependencies {
@@ -29,7 +32,8 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     implementation("org.springframework.kafka:spring-kafka")
-    implementation(project(":CommonDTO"))
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.14")
+    implementation(files("libs/openapi-bookings-0.0.1.jar"))
     implementation(project(":user-service"))
     implementation("io.github.openfeign:feign-okhttp:13.5")
     implementation("org.mapstruct:mapstruct:1.6.3")
